@@ -12,6 +12,8 @@ const FileStore = require('session-file-store')(session);
 const config = require('./config/default');
 
 const app = express();
+
+// database connect
 mongoose.connect('mongodb://127.0.0.1/nodeStream', {
     useNewUrlParser: true,
 });
@@ -39,4 +41,4 @@ app.get('*', middleware.ensureLoggedIn(), (req, res) => {
     res.render('index');
 });
 
-app.listen(port, () => console.log(`Application ready on port ${port}`));
+app.listen(config.server.port, () => console.log(`Application ready on port ${config.server.port}`));
