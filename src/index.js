@@ -10,6 +10,7 @@ const FileStore = require('session-file-store')(session);
 
 // should be singleton and extended
 const config = require('./config/default');
+const passport = require('./auth/passport');
 
 const app = express();
 
@@ -31,11 +32,16 @@ app.use(bodyParse.json({ extended: true }));
 // session
 app.use(session({
     store: new FileStore({
-        path: './server/sessions',
+        path: './src/sessions',
     }),
     secret: config.server.secret,
     maxAge: Date().now + (60 * 1000 * 30),
+    resave: true,
+    saveUninitialized: false,
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('*', middleware.ensureLoggedIn(), (req, res) => {
     res.render('index');
