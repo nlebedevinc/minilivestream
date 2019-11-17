@@ -4,9 +4,9 @@ const express = require('express');
 const session = require('express-session');
 const bodyParse = require('body-parser');
 const mongoose = require('mongoose');
-const middleware = require('connect-ensure-logic');
+const middleware = require('connect-ensure-login');
 const flash = require('connect-flash');
-const FileStore = require('session-file-storage')(session);
+const FileStore = require('session-file-store')(session);
 
 // should be singleton and extended
 const config = require('./config/default');
@@ -26,6 +26,7 @@ app.use(require('cookie-parser')());
 app.use(bodyParse.urlencoded({ extended: true }));
 app.use(bodyParse.json({ extended: true }));
 
+// session
 app.use(session({
     store: new FileStore({
         path: './server/sessions',
